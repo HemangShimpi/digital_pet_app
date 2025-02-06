@@ -60,15 +60,12 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
 
   @override
   Widget build(BuildContext context) {
-// For the ToDo task hint: consider defining the widget and name of the tabs here
     final tabs = ['Name', 'Age', 'Type'];
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
-          'Digital Pet App',
-        ),
+        title: Text('Digital Pet'),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: false,
@@ -80,11 +77,9 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
       body: TabBarView(
         controller: _tabController,
         children: [
-// hint for the to do task:Considering creating the different for different tabs
-          for (final tab in tabs)
-            Center(
-              child: Text(tab),
-            ),
+          Center(child: Text('The pet’s name is Fluffy.')),
+          Center(child: Text('Fluffy is 2 years old.')),
+          Center(child: Text('Fluffy is a playful dog.')),
         ],
       ),
     );
