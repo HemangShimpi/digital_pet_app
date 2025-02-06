@@ -9,26 +9,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 3,
-        child: _TabsNonScrollableDemo(),
+        length: 4,
+        child: _TabsCustomDemo(),
       ),
     );
   }
 }
 
-class _TabsNonScrollableDemo extends StatefulWidget {
+class _TabsCustomDemo extends StatefulWidget {
   @override
-  __TabsNonScrollableDemoState createState() => __TabsNonScrollableDemoState();
+  __TabsCustomDemoState createState() => __TabsCustomDemoState();
 }
 
-class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
+class __TabsCustomDemoState extends State<_TabsCustomDemo>
     with SingleTickerProviderStateMixin, RestorationMixin {
   late TabController _tabController;
-
   final RestorableInt tabIndex = RestorableInt(0);
 
   @override
-  String get restorationId => 'tab_non_scrollable_demo';
+  String get restorationId => 'tab_custom_demo';
 
   @override
   void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
@@ -41,7 +40,7 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
     super.initState();
     _tabController = TabController(
       initialIndex: 0,
-      length: 3,
+      length: 4,
       vsync: this,
     );
     _tabController.addListener(() {
@@ -60,12 +59,13 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
 
   @override
   Widget build(BuildContext context) {
-    final tabs = ['Name', 'Age', 'Type'];
+    final tabs = ['Name', 'Age', 'Type', 'Extras'];
+    final tabColors = [Colors.blue[50], Colors.green[50], Colors.orange[50], Colors.purple[50]];
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Digital Pet'),
+        title: Text('Digital Pet App'),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: false,
@@ -77,9 +77,91 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
       body: TabBarView(
         controller: _tabController,
         children: [
-          Center(child: Text('The pet’s name is Fluffy.')),
-          Center(child: Text('Fluffy is 2 years old.')),
-          Center(child: Text('Fluffy is a playful dog.')),
+          // First Tab - Text Input
+          Container(
+            color: tabColors[0],
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Enter your pet’s Name',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // Second Tab - Card Widget
+          Container(
+            color: tabColors[1],
+            child: Center(
+              child: Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Your pet’s age will be displayed here.',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // Third Tab - Alert Dialog
+          Container(
+            color: tabColors[2],
+            child: Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Pet Type Info'),
+                      content: Text('Choose a pet type wisely based on your lifestyle!'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                child: Text('Show Pet Type Info'),
+              ),
+            ),
+          ),
+          // Fourth Tab - Bottom App Bar
+          Scaffold(
+            backgroundColor: tabColors[3],
+            bottomNavigationBar: BottomAppBar(
+              shape: CircularNotchedRectangle(),
+              child: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.home),
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.pets),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            body: Center(
+              child: Text(
+                'More pet features coming soon!',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
         ],
       ),
     );
